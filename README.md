@@ -11,7 +11,7 @@ Require and use:
 ```clojure
 (require '[datemath.core :as dm])
 
-(dm/calc "now/w +15d +1s") #_"Return a java.time.LocalDateTime of the proper date"
+(dm/calc "now/w +15d +1s") #_"Return a java.time.ZonedDateTime of the proper date"
 ```
 
 Available operations:
@@ -30,7 +30,7 @@ Available units:
 - `M` for months
 - `y` for years
 
-You should always start with `now`, it will use timezoned local date time.
+You should always start with `now`, it will use timezoned date time.
 
 ## License
 

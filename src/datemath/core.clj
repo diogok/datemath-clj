@@ -1,17 +1,17 @@
 (ns datemath.core
   (:require [java-time :as time]))
 
-(def ^:dynamic *fixed-time* nil)
-
-(defn now-0
-  [] (time/local-date-time))
-
 (defn now
-  "Return now, unless time is fixed."
-  [] 
-  (if (not (nil? *fixed-time*))
-    *fixed-time*
-    (now-0)))
+  "Return now, zoned date and time."
+  [] (time/zoned-date-time))
+
+(defn from-string
+  "Parse a ISO datestring to zoned date time."
+  [date-string] (time/zoned-date-time (time/formatter :iso-offset-date-time) date-string))
+
+(defn to-string
+  "Return an ISO string of the given date"
+  [date-time] (time/format (time/formatter :iso-offset-date-time) date-time))
 
 (def unit-to-unit
   {"s" time/seconds
