@@ -16,9 +16,9 @@ Require and use:
 
 Available operations:
 
-- `+` 
-- `-`
-- `/`
+- `+` add time units
+- `-` remove time units
+- `/` round to/truncate to time unit lower boundary
 
 Available units:
 
@@ -30,7 +30,7 @@ Available units:
 - `M` for months
 - `y` for years
 
-You should always start with `now`.
+You should always start with `now`, it will use timezoned local date time.
 
 ## License
 
