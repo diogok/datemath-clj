@@ -16,6 +16,16 @@
   (let [date (t/zoned-date-time 2019 1 2 0 0 23 0 (t/zone-id "Z"))]
     (is (= "2019-01-02T00:00:23Z" (to-string date)))))
 
+(deftest now-or-datestring
+  (t/with-clock (t/mock-clock 0 "Z")
+    (is (= (calc-date "now+1d")
+           (t/plus (now) (t/days 1))))
+    (is (= (calc-date "1970-01-01T00:00:00Z||+1d")
+           (t/plus (now) (t/days 1))))
+    (is (= (calc-date "now+2d/w")
+           (calc-date "1970-01-01T00:00:00Z||+2d/w")))
+    ))
+
 (deftest basic-convertions
   (t/with-clock (t/mock-clock 0 "UTC")
     (is (= (calc-date "now+1d")

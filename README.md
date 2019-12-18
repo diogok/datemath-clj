@@ -11,7 +11,8 @@ Require and use:
 ```clojure
 (require '[datemath.core :as dm])
 
-(dm/calc "now/w +15d +1s") #_"Return a java.time.ZonedDateTime of the proper date"
+(dm/calc "now/w +15d -1s") #_"Return a java.time.ZonedDateTime of the proper date"
+(dm/calc "2019-01-02T00:10:30Z||/w +15d -1s") #_"Also support iso zoned date string"
 ```
 
 Available operations:
@@ -30,7 +31,7 @@ Available units:
 - `M` for months
 - `y` for years
 
-You should always start with `now`, it will use timezoned date time.
+You should always start with `now` or an ISO formated with timezone info such as `2019-01-02T00:10:30Z` or `2019-01-02T00:10:30+00:00`, it will use timezoned date time.
 
 ## License
 

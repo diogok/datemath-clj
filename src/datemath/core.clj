@@ -1,5 +1,6 @@
 (ns datemath.core
-  (:require [java-time :as time]))
+  (:require [java-time :as time])
+  (:require [clojure.string :as str]))
 
 (defn now
   "Return now, zoned date and time."
@@ -62,9 +63,11 @@ Return a function that take an instant and return it rounded."
 
 (defn parts-to-operations
   "Transform text operation in a function"
-  [part] 
+  [part]
   (if (= "now" part) (now)
-      (parts-to-operations-0 part)))
+      (if (str/includes? part "T")
+        (from-string part)
+        (parts-to-operations-0 part))))
 
 (defn operations-to-instant
   "Reduce instant operations"
@@ -73,9 +76,18 @@ Return a function that take an instant and return it rounded."
    (nil? acc) (op)
    (op acc)))
 
-(defn text-to-parts
+(defn extract-operations
   "Split a full text to operations text parts. Ignore unexpected parts."
-  [text] (re-seq #"now|[+\-][1-9]+[a-zA-Z]|[/][a-zA-Z]" text))
+  [text] (re-seq #"[+\-][1-9]+[a-zA-Z]|[/][a-zA-Z]" text))
+
+(defn text-to-parts
+  "Get initial date and operations"
+  [text] 
+  (if (= "now" (apply str (take 3 text)))
+    (cons "now" (extract-operations (apply str (drop 3 text))))
+    (let [parts (str/split text #"\|\|")]
+      (when (= 2 (count parts))
+        (cons (first parts) (extract-operations (last parts)))))))
 
 (defn calc-date
   "Transform a date math in an date calculated"
